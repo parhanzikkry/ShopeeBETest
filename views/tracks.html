@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+        <title>Currency Exchanges</title>
+    </head>
+    <body>
+        <!-- Main Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Currency Exchanges</a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="http://localhost:3000/">History <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="http://localhost:3000/tracks">Track</a>
+                </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="container">
+            <br>
+            <!-- add button for modal -->
+            <div class="row justify-content-end">
+                <button type="button" class="btn btn-primary col-2" data-toggle="modal" data-target=".bd-example-modal-lg">Add Track Data</button>
+            </div>
+            <!-- modals -->
+            <div id="modalwindows" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Add a Track of Currency Exchanges</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="fromInput">From</label>
+                                    <input type="text" class="form-control" id="fromInput" aria-describedby="fromInput" placeholder="USD" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="toInput">To</label>
+                                    <input type="text" class="form-control" id="toInput" aria-describedby="toInput" placeholder="IDR" required>
+                                </div>
+                                <button class="btn btn-primary" data-dismiss="modal" onclick="Add()">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <!-- Error in here -->
+            <div id="error"></div>
+            <br>
+            <!-- list in table -->
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">From</th>
+                        <th scope="col">To</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="tabel">
+                </tbody>
+            </table>
+        </div>
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <script type="text/javascript">
+             window.onload = SetDefaultData();
+             function SetDefaultData() {
+                 var baseUrl = window.location.origin + '/api/tracks/ListOfTracks';
+                 $.ajax({
+                     url: baseUrl,
+                     type: 'get',
+                     success: function(_response) {
+                         if(_response.status.success) {
+                             var data = _response.data;
+                             var html = [];
+                             for(let i=0; i<data.length; i++) {
+                                 html[i] = "<tr><td>"+data[i].from+"</td><td>"+data[i].to+"</td><td><button type='button' class='btn btn-danger col-2' onclick='Delete("+data[i].id+")'>Delete</button></td></tr>"
+                             }
+                             var gabungan = html.join('');
+                             document.getElementById("tabel").innerHTML = gabungan
+                         } else {
+                            document.getElementById("error").innerHTML = '<div class="alert alert-warning alert-dismissible fade show" role="alert" id="error"><strong>'+ _response.message +'<button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">&times;</span> </button></div>'
+                         }
+                     }
+                 })
+            }
+            
+            function Add() {
+                var baseUrl = window.location.origin + '/api/tracks/NewTrack';
+                var from = $('#fromInput').val();
+                var to = $('#toInput').val();
+                $.ajax({
+                    url: baseUrl,
+                    type: 'post',
+                    data: {
+                        from: from,
+                        to: to
+                    },
+                    success: function(_response) {
+                        console.log(_response)
+                        if(_response.status.success) {
+                            SetDefaultData();
+                        } else {
+                            document.getElementById("error").innerHTML = '<div class="alert alert-warning alert-dismissible fade show" role="alert" id="error"><strong>'+ _response.message +'<button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">&times;</span> </button></div>'
+                        }
+                    }
+                })
+            }
+
+            function Delete(id) {
+                var baseUrl = window.location.origin + '/api/tracks/DeleteTrack/' + id;
+                $.ajax({
+                    url: baseUrl,
+                    type: 'delete',
+                    success: function(_response) {
+                        if(_response.status.success) {
+                            SetDefaultData();
+                        } else {
+                            document.getElementById("error").innerHTML = '<div class="alert alert-warning alert-dismissible fade show" role="alert" id="error"><strong>'+ _response.message +'<button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">&times;</span> </button></div>'
+                        }
+                    }
+                })
+            }
+        </script>
+    </body>
+</html>

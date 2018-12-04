@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+        <title>Currency Exchanges</title>
+    </head>
+    <body>
+        <!-- Main Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Currency Exchanges</a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="http://localhost:3000/">History <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="http://localhost:3000/tracks">Track</a>
+                </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="container">
+            <br>
+            <!-- add button for modal -->
+            <div class="row justify-content-end">
+                <button type="button" class="btn btn-primary col-2" data-toggle="modal" data-target=".bd-example-modal-lg">Add History Data</button>
+            </div>
+            <!-- modals -->
+            <div id="modalwindows" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Add History Of Currency Exchanges</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="dateInput">Date</label>
+                                    <input type="text" class="form-control" id="dateInput" aria-describedby="dateInput" placeholder="yyyy-mm-dd Ex: 2018-07-07" required>
+                                    <small id="dateInput" class="form-text text-muted">yyyy-mm-dd Ex: 2018-07-07</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="fromInput">From</label>
+                                    <input type="text" class="form-control" id="fromInput" aria-describedby="fromInput" placeholder="USD" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="toInput">To</label>
+                                    <input type="text" class="form-control" id="toInput" aria-describedby="toInput" placeholder="IDR" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="rateInput">Rate</label>
+                                    <input type="number" step="0.000001" class="form-control" id="rateInput" aria-describedby="Rate" placeholder="13432" required>
+                                    <small id="rateInput" class="form-text text-muted">13432 or 0.42314 (with point not comma)</small>
+                                </div>
+                                <button class="btn btn-primary" data-dismiss="modal" onclick="Add()">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <!-- Error in here -->
+            <div id="error"></div>
+            <!-- second NavBar -->
+            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">By Date</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">By Track</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+                <!-- inside of by date -->
+                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">Date</span>
+                        </div>
+                        <input id="date" type="text" class="form-control" placeholder="yyyy-mm-dd" aria-label="Recipient's username" aria-describedby="basic-addon2" value="2018-07-07">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button" onclick="changeDataByDate()">Change</button>
+                        </div>
+                    </div>
+                    <br>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">To</th>
+                                <th scope="col">Rate</th>
+                                <th scope="col">7-day avg</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabelByDate">
+                        </tbody>
+                    </table>
+                </div>
+                <!-- inside of by track -->
+                <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">From</span>
+                        </div>
+                        <input id="from" type="text" class="form-control" aria-label="Recipient's username" aria-describedby="basic-addon2" value="GBP">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">To</span>
+                        </div>
+                        <input id="to" type="text" class="form-control" placeholder="yyyy-mm-dd" aria-label="Recipient's username" aria-describedby="basic-addon2" value="USD">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button" onclick="changeDataByTrack()">Change</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2">
+                           <b> Average: </b>
+                        </div>
+                        <div class="col-4" id="avgbytrack"></div>
+                        <div class="col-2">
+                            <b> Variance: </b>
+                        </div>
+                        <div class="col-4" id="varbytrack"></div>
+                    </div>
+                    <br>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">Rate</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabelByTrack">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <script type="text/javascript">
+            window.onload = SetDefaultData();
+            function SetDefaultData() {
+                var baseUrl1 = window.location.origin + "/api/histories/Get7DayOfHistoriesByDate/2018-07-07";
+                var baseUrl2 = window.location.origin + "/api/histories/Get7DayOfHistoriesByTracked/GBP/USD"
+                prosesByDate(baseUrl1);
+                prosesByTrack(baseUrl2);
+            }
+            function changeDataByDate() {
+                var date = $('#date').val();
+                var baseUrl = window.location.origin + "/api/histories/Get7DayOfHistoriesByDate/" + date;
+                prosesByDate(baseUrl);
+            }
+            function changeDataByTrack() {
+                var from = $('#from').val();
+                var to = $('#to').val();
+                var baseUrl = window.location.origin + '/api/histories/Get7DayOfHistoriesByTracked/' + from + '/' + to;
+                prosesByTrack(baseUrl);
+            }
+            function prosesByDate(url) {
+                $.ajax({
+                    url: url,
+                    type: "get",
+                    success: function(_response){
+                        if(_response.status.success == true) {
+                            var data = _response.data;
+                            var html = [];
+                            for(let i=0; i<data.length; i++) {
+                                html[i] = "<tr><td>"+data[i].from+"</td><td>"+data[i].to+"</td><td>"+data[i].rate+"</td><td>"+data[i].avg+"</td></tr>"
+                            }
+                            var gabungan = html.join('');
+                            document.getElementById("tabelByDate").innerHTML = gabungan
+                        } else {
+                            document.getElementById("error").innerHTML = '<div class="alert alert-warning alert-dismissible fade show" role="alert" id="error"><strong>'+ _response.message +'<button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">&times;</span> </button></div>'
+                        }
+                    }
+                })
+            }
+            function prosesByTrack(url) {
+                $.ajax({
+                    url: url,
+                    type: "get",
+                    success: function(_response){
+                        if(_response.status.success == true) {
+                            var data = _response.data.history;
+                            var html = [];
+                            document.getElementById("avgbytrack").innerHTML = _response.data.avg;
+                            document.getElementById("varbytrack").innerHTML = _response.data.var;
+                            for(let i=0; i<data.length; i++) {
+                                html[i] = "<tr><td>"+data[i].date+"</td><td>"+data[i].rate+"</td></tr>"
+                            }
+                            var gabungan = html.join('');
+                            document.getElementById("tabelByTrack").innerHTML = gabungan
+                        } else {
+                            document.getElementById("error").innerHTML = '<div class="alert alert-warning alert-dismissible fade show" role="alert" id="error"><strong>'+ _response.message +'<button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">&times;</span> </button></div>'
+                        }
+                    }
+                })
+            }
+            function Add() {
+                var date = $('#dateInput').val();
+                var from = $('#fromInput').val();
+                var to = $('#toInput').val();
+                var rate = $('#rateInput').val();
+                var baseUrl = window.location.origin + '/api/histories/CreateHistory';
+                $.ajax({
+                    url: baseUrl,
+                    type: 'post',
+                    data: {
+                        date: date,
+                        from: from,
+                        to: to,
+                        rate: rate
+                    },
+                    success: function(_response) {
+                        if(!_response.status.success) {
+                            document.getElementById("error").innerHTML = '<div class="alert alert-warning alert-dismissible fade show" role="alert" id="error"><strong>'+ _response.message +'<button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">&times;</span> </button></div>'
+                        }
+                    }
+                });
+            }
+        </script>
+    </body>
+</html>
