@@ -1,7 +1,7 @@
 var Sequelize = require('sequelize');
 
 module.exports = new Sequelize('currencyexchanges'/*DB name*/, 'pzp'/*DB username*/, 'ayulestari'/*DB password*/, {
-	host: 'localhost',
+	host: process.env.DATABASE_HOST || '127.0.0.1',
     dialect: 'mysql'/*type of DBMS*/,
     port: 3306,
 

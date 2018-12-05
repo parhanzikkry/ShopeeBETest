@@ -105,12 +105,14 @@ class Tracks {
                     }
                 })
                 .catch((err) => {
+                    console.log(err)
                     res.json({
                         status: {
                             code: 400,
                             success: false,
                         },
-                        message: 'gagal melakukan pengecheckan pada saat query'
+                        message: 'gagal melakukan pengecheckan pada saat query',
+                        info: err
                     })
                 });
         }
