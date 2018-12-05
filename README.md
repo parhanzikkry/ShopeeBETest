@@ -40,7 +40,7 @@ This application work in architectural patterns MVC. Each model in this app is m
 
 ![alt text](https://raw.githubusercontent.com/parhanzikkry/ShopeeBETest/master/ERD_ShopeeTest.png "ERD")
 
-There is 2 table, Tracks and histories. Tracks is table for describe every currency exchange will be record in this app. there is 3 attribute, id is primary key for this table, from is currency exchange from, and to is currency exchange to. Histories is table for store every record of currency exchange already track in tracks's table. there is 4 attribute, id is primary key for this table, fk_track_id is foreign key from tracks's table, history_date is date of currency exchange occur, history_rate is rate of currency exchange occur. Each record in tracks's table can have ralation zero or more in histories's table and each record in histories's table must have on relation in tracks's table.
+There is 2 table, Tracks and histories. Tracks is table for describe every currency exchange will be record in this app. there is 3 attribute, id is primary key for this table, from is currency exchange from, and to is currency exchange to. Histories is table for store daily record of currency exchange already track in tracks's table. there is 4 attribute, id is primary key for this table, fk_track_id is foreign key from tracks's table, history_date is date of currency exchange occur, history_rate is rate of currency exchange occur. Each record in tracks's table can have ralation zero or more in histories's table and each record in histories's table must have on relation in tracks's table.
 
 ## Any Question?
 Do you have any question, opinion, or suggestion, you can send it with email: parhanzikkrypadly@gmail.com i really appreciate it.
