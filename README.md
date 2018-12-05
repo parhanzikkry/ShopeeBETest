@@ -2,7 +2,7 @@
 
 ## About This App
 
-This apps provide api for front-end engineer to store, add, and show the record of daily currency exchanges rate. This application run with:
+This apps provide api for front-end engineer to store, delete, and show the record of daily currency exchanges rate. This application run with:
 1. Node.Js with Express framework.
 2. Mysql with ORM sequelize framework.
 3. Flat html and jquery in front-end to show and access the rocord of data.
