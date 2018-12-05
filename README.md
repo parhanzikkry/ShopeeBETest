@@ -9,6 +9,8 @@ This apps provide api for front-end engineer to store, delete, and show the reco
 
 ## How To Run
 ### Via Docker
+#### Prerequisites
+You are already have docker:18.09.0 (same version is recomended), and docker-compose:1.23.1 (same version is recomended) in your PC. (Note: im use Ubuntu 18.04)
 #### Step
 1. Pull this git repository first.
 2. Move to directory shopeeTest Ex: cd shopeeTest
@@ -16,7 +18,7 @@ This apps provide api for front-end engineer to store, delete, and show the reco
 4. This app will run in localhost:3000 in your browser
 ### Without Docker
 #### Prerequisites
-You are already have mysql:5.7.24 (same version is recomended), Node:8.14.0 (same version is recomended) and npm:6.4.1 (same version is recomended) in your PC. 
+You are already have mysql:5.7.24 (same version is recomended), Node:8.14.0 (same version is recomended) and npm:6.4.1 (same version is recomended) in your PC. (Note: im use Ubuntu 18.04)
 #### Step
 1. Pull this git repository first.
 2. Move to directory shopeeTest Ex: cd shopeeTest.
