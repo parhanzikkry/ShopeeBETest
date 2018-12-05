@@ -105,7 +105,6 @@ class Tracks {
                     }
                 })
                 .catch((err) => {
-                    console.log(err)
                     res.json({
                         status: {
                             code: 400,

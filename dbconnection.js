@@ -13,5 +13,6 @@ module.exports = new Sequelize('currencyexchanges'/*DB name*/, 'pzp'/*DB usernam
 		acquire: 10000
 	},
 	/*Set timezone to DB*/
-	timezone: '+07:00'
+	timezone: '+07:00',
+	logging: false
 });

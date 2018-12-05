@@ -2,7 +2,7 @@
 FROM mysql:5.7.24
 
 ENV MYSQL_ROOT_PASSWORD ayulestari
-ENV MYSQL_USER users_service
+ENV MYSQL_USER pzp
 ENV MYSQL_PASSWORD ayulestari
 ENV MYSQL_DATABASE currencyexchanges
 
